@@ -23,6 +23,8 @@ public class ButtonSet extends JPanel implements ActionListener, SerialPortEvent
 	JLabel lbl;
 	JButton left;
 	JButton right;
+	JButton veryRight;
+	JButton veryLeft;
 	String lAction;
 	String rAction;
 	
@@ -48,35 +50,64 @@ public class ButtonSet extends JPanel implements ActionListener, SerialPortEvent
 		rAction = rightAction;
 	}
 	
+	public ButtonSet(String label, String leftButton, String rightButton,String vLeft, String vRight, String leftAction, String rightAction, SerialPort serial) 
+	{
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		top = new JPanel();
+		top.setLayout(new FlowLayout());
+		bottom = new JPanel();
+		bottom.setLayout(new FlowLayout());
+		add(top);
+		add(bottom);
+		lbl = new JLabel(label);
+		top.add(lbl);
+		veryLeft = new JButton(vLeft);
+		veryLeft.addActionListener(this);
+		left = new JButton(leftButton);
+		left.addActionListener(this);
+		right = new JButton(rightButton);
+		right.addActionListener(this);
+		veryRight = new JButton(vRight);
+		veryRight.addActionListener(this);
+		bottom.add(veryLeft);
+		bottom.add(left);
+		bottom.add(right);
+		bottom.add(veryRight);
+		s = serial;
+		lAction = leftAction;
+		rAction = rightAction;
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
+		String action;
 		if(e.getSource().equals(left))
 		{
-			
-			try {
-				SerialArm.serial.writeString(lAction);
-				//System.out.println(s.readBytes());
-			} catch (SerialPortException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			action = lAction;
+		}
+		else if (e.getSource().equals(right))
+		{
+			action = rAction;
+		}
+		else if (e.getSource().equals(veryLeft))
+		{
+			action = lAction.toUpperCase();
 		}
 		else
 		{
-			try {
-				SerialArm.serial.writeString(rAction);
-			} catch (SerialPortException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			action = rAction.toUpperCase();
 		}
-//		try {
-//			//s.closePort();
-//		} catch (SerialPortException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
+		
+		try 
+		{
+			SerialArm.serial.writeString(action);
+			System.out.println("Sent: " + action);
+		} 
+		catch (SerialPortException e1) 
+		{
+			e1.printStackTrace();
+		}
 	}
 	
 	@Override
