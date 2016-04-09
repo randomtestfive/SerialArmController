@@ -70,6 +70,7 @@ public class SerialArm implements ActionListener, SerialPortEventListener
 		goButton = new JButton("Go");
 		goButton.addActionListener(a);
 		frame.add(goButton);
+		frame.setLocation(200, 50);
 		frame.setVisible(true);
 		//frame.pack();
 	}
