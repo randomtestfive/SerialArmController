@@ -41,9 +41,8 @@ public class SerialArm implements ActionListener, SerialPortEventListener
 
 		String[] portNames = SerialPortList.getPortNames();
         
-		if (portNames.length == 0) {
-		    System.out.println("There are no serial-ports :( You can use an emulator, such ad VSPE, to create a virtual serial port.");
-		    System.out.println("Press Enter to exit...");
+		if (portNames.length == 0) 
+		{
 		    label = new JLabel("Could not find any COM ports.");
 		    frame.add(label);
 		    goButton = new JButton("OK");
@@ -55,6 +54,8 @@ public class SerialArm implements ActionListener, SerialPortEventListener
 					System.exit(0);
 				}
 			});
+		    frame.add(goButton);
+		    frame.setVisible(true);
 		    while(true);
 		}
 
