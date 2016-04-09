@@ -97,11 +97,11 @@ public class SerialArm implements ActionListener, SerialPortEventListener
 					frame.revalidate();
 					frame.repaint();
 					frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
-					base = new ButtonSet("Base", "Left", "Right", "o", "p", serial);
+					base = new ButtonSet("Base", "Left", "Right", "<<", ">>", "o", "p", serial);
 					frame.add(base);
-					shoulder = new ButtonSet("Shoulder", "Up", "Down", "q", "w", serial);
+					shoulder = new ButtonSet("Shoulder", "Up", "Down", "<<", ">>", "q", "w", serial);
 					frame.add(shoulder);
-					elbow = new ButtonSet("Elbow", "Up", "Down", "e", "r", serial);
+					elbow = new ButtonSet("Elbow", "Up", "Down", "<<", ">>", "e", "r", serial);
 					frame.add(elbow);
 					wrist = new ButtonSet("Wrist", "CCW", "CC", "u", "i", serial);
 					frame.add(wrist);
