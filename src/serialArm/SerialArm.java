@@ -104,7 +104,7 @@ public class SerialArm implements ActionListener, SerialPortEventListener
 					frame.add(elbow);
 					wrist = new ButtonSet("Wrist", "CCW", "CC", "u", "i", serial);
 					frame.add(wrist);
-					claw = new ButtonSet("Claw", "Open", "Close", "t", "y", serial);
+					claw = new ButtonSet("Claw", "Open", "Close", "y", "t", serial);
 					frame.add(claw);
 					frame.pack();
 					frame.validate();
