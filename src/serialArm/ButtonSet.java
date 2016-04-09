@@ -51,24 +51,12 @@ public class ButtonSet extends JPanel implements ActionListener, SerialPortEvent
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
-		
-		try {
-			s.openPort();
-			s.setParams(SerialPort.BAUDRATE_9600,
-					SerialPort.DATABITS_8,
-			        SerialPort.STOPBITS_1,
-			        SerialPort.PARITY_NONE);
-			s.addEventListener(this);
-		} catch (SerialPortException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
 		if(e.getSource().equals(left))
 		{
 			
 			try {
-				s.writeString(lAction);
-				System.out.println(s.readString());
+				SerialArm.serial.writeString(lAction);
+				//System.out.println(s.readBytes());
 			} catch (SerialPortException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -77,18 +65,18 @@ public class ButtonSet extends JPanel implements ActionListener, SerialPortEvent
 		else
 		{
 			try {
-				s.writeString(rAction);
+				SerialArm.serial.writeString(rAction);
 			} catch (SerialPortException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		}
-		try {
-			s.closePort();
-		} catch (SerialPortException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+//		try {
+//			//s.closePort();
+//		} catch (SerialPortException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
 	}
 	
 	@Override

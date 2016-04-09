@@ -91,7 +91,7 @@ public class SerialArm implements ActionListener, SerialPortEventListener
 	                        SerialPort.PARITY_NONE);
 					serial.addEventListener(this);
 					serial.writeString("asdf");
-					serial.closePort();
+					//serial.closePort();
 					frame.getContentPane().removeAll();
 					frame.revalidate();
 					frame.repaint();
