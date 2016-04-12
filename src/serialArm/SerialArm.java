@@ -146,7 +146,7 @@ public class SerialArm implements ActionListener, SerialPortEventListener
 	public void serialEvent(SerialPortEvent arg0) 
 	{
 		try {
-			System.out.println(serial.readString(arg0.getEventValue()));
+			System.out.print(serial.readString(arg0.getEventValue()));
 		} catch (SerialPortException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
