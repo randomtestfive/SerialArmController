@@ -21,6 +21,7 @@ public class SerialArm implements ActionListener, SerialPortEventListener
 {
 	public static SerialPort serial;
 	public static JFrame frame;
+	public static JFrame sequencer;
 	public static JComboBox<String> comSelect;
 	public static JButton goButton;
 	public static JLabel label;
@@ -38,6 +39,20 @@ public class SerialArm implements ActionListener, SerialPortEventListener
 		frame.setTitle("Arm Controller");
 		frame.setLayout(new FlowLayout());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		base = new ButtonSet("Base", "Left", "Right", "<<", ">>", "o", "p");
+		shoulder = new ButtonSet("Shoulder", "Up", "Down", "<<", ">>", "q", "w");
+		elbow = new ButtonSet("Elbow", "Up", "Down", "<<", ">>", "e", "r");
+		wrist = new ButtonSet("Wrist", "CCW", "CC", "u", "i");
+		claw = new ButtonSet("Claw", "Open", "Close", "y", "t");
+		sequencer = new JFrame("Sequencer");
+		sequencer.setLocation(500, 50);
+		ButtonSet[] set = {base, shoulder, elbow, wrist, claw};
+		SequenceOption option =  new SequenceOption(set);
+		sequencer.add(option);
+		sequencer.setSize(200,100);
+		sequencer.setVisible(true);
+		sequencer.pack();
 
 		String[] portNames = SerialPortList.getPortNames();
         
@@ -72,6 +87,7 @@ public class SerialArm implements ActionListener, SerialPortEventListener
 		frame.add(goButton);
 		frame.setLocation(200, 50);
 		frame.setVisible(true);
+
 		//frame.pack();
 	}
 
@@ -97,15 +113,14 @@ public class SerialArm implements ActionListener, SerialPortEventListener
 					frame.revalidate();
 					frame.repaint();
 					frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
-					base = new ButtonSet("Base", "Left", "Right", "<<", ">>", "o", "p", serial);
 					frame.add(base);
-					shoulder = new ButtonSet("Shoulder", "Up", "Down", "<<", ">>", "q", "w", serial);
+					
 					frame.add(shoulder);
-					elbow = new ButtonSet("Elbow", "Up", "Down", "<<", ">>", "e", "r", serial);
+					
 					frame.add(elbow);
-					wrist = new ButtonSet("Wrist", "CCW", "CC", "u", "i", serial);
+					
 					frame.add(wrist);
-					claw = new ButtonSet("Claw", "Open", "Close", "y", "t", serial);
+					
 					frame.add(claw);
 					frame.pack();
 					frame.validate();

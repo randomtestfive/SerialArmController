@@ -28,7 +28,7 @@ public class ButtonSet extends JPanel implements ActionListener, SerialPortEvent
 	String lAction;
 	String rAction;
 	
-	public ButtonSet(String label, String leftButton, String rightButton, String leftAction, String rightAction, SerialPort serial) 
+	public ButtonSet(String label, String leftButton, String rightButton, String leftAction, String rightAction) 
 	{
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		top = new JPanel();
@@ -45,12 +45,11 @@ public class ButtonSet extends JPanel implements ActionListener, SerialPortEvent
 		right.addActionListener(this);
 		bottom.add(left);
 		bottom.add(right);
-		s = serial;
 		lAction = leftAction;
 		rAction = rightAction;
 	}
 	
-	public ButtonSet(String label, String leftButton, String rightButton,String vLeft, String vRight, String leftAction, String rightAction, SerialPort serial) 
+	public ButtonSet(String label, String leftButton, String rightButton,String vLeft, String vRight, String leftAction, String rightAction) 
 	{
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		top = new JPanel();
@@ -73,7 +72,6 @@ public class ButtonSet extends JPanel implements ActionListener, SerialPortEvent
 		bottom.add(left);
 		bottom.add(right);
 		bottom.add(veryRight);
-		s = serial;
 		lAction = leftAction;
 		rAction = rightAction;
 	}
