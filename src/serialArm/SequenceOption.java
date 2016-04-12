@@ -1,9 +1,13 @@
 package serialArm;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -27,6 +31,7 @@ public class SequenceOption extends JPanel implements ActionListener
 	boolean[] verys;
 	JCheckBox very;
 	JPanel top;
+	JPanel topIn;
 	public static JPanel bottom;
 	
 	public SequenceOption(ButtonSet[] set) 
@@ -34,9 +39,15 @@ public class SequenceOption extends JPanel implements ActionListener
 		super();
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		top = new JPanel();
+		topIn = new JPanel();
+		topIn.setLayout(new FlowLayout(FlowLayout.LEADING));
+		top.add(topIn);
+		top.setLayout(new BoxLayout(top, BoxLayout.X_AXIS));
+		top.setAlignmentX(LEFT_ALIGNMENT);
 		add(top);
 		bottom = new JPanel();
 		bottom.setLayout(new BoxLayout(bottom, BoxLayout.Y_AXIS));
+		bottom.setAlignmentX(LEFT_ALIGNMENT);
 		add(bottom);
 		names = new String[set.length];
 		lDirections = new String[set.length];
@@ -55,7 +66,8 @@ public class SequenceOption extends JPanel implements ActionListener
 		}
 		options = new JComboBox<String>(names);
 		options.addActionListener(this);
-		top.add(options);
+		topIn.add(options);
+		topIn.add(Box.createRigidArea(new Dimension(5,0)));
 		left = new JButton(lLabels[0]);
 		left.setPreferredSize(new Dimension(70, 30));
 		left.addActionListener(this);
@@ -63,16 +75,20 @@ public class SequenceOption extends JPanel implements ActionListener
 		right = new JButton(rLabels[0]);
 		right.setPreferredSize(new Dimension(70, 30));
 		right.addActionListener(this);
-		top.add(left);
-		top.add(right);
+		topIn.add(left);
+		topIn.add(Box.createRigidArea(new Dimension(5,0)));
+		topIn.add(right);
+		topIn.add(Box.createRigidArea(new Dimension(5,0)));
 		System.out.println("yes");
 		label = new JLabel("Very: ");
-		top.add(label);
+		topIn.add(label);
+		topIn.add(Box.createRigidArea(new Dimension(5,0)));
 		very = new JCheckBox();
-		top.add(very);
+		topIn.add(very);
+		topIn.add(Box.createRigidArea(new Dimension(5,0)));
 		add = new JButton("Add");
 		add.addActionListener(this);
-		top.add(add);
+		topIn.add(add);
 	}
 	
 	@Override
