@@ -51,6 +51,7 @@ public class SerialArm implements ActionListener, SerialPortEventListener
 		SequenceOption option =  new SequenceOption(set);
 		sequencer.add(option);
 		sequencer.setSize(200,100);
+		sequencer.getContentPane().setLayout(new BoxLayout(sequencer.getContentPane(), BoxLayout.Y_AXIS));
 		sequencer.setVisible(true);
 		sequencer.pack();
 

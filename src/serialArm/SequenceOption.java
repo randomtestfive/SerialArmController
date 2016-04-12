@@ -26,11 +26,18 @@ public class SequenceOption extends JPanel implements ActionListener
 	String[] rLabels;
 	boolean[] verys;
 	JCheckBox very;
+	JPanel top;
+	public static JPanel bottom;
 	
 	public SequenceOption(ButtonSet[] set) 
 	{
 		super();
-		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		top = new JPanel();
+		add(top);
+		bottom = new JPanel();
+		bottom.setLayout(new BoxLayout(bottom, BoxLayout.Y_AXIS));
+		add(bottom);
 		names = new String[set.length];
 		lDirections = new String[set.length];
 		rDirections = new String[set.length];
@@ -48,7 +55,7 @@ public class SequenceOption extends JPanel implements ActionListener
 		}
 		options = new JComboBox<String>(names);
 		options.addActionListener(this);
-		add(options);
+		top.add(options);
 		left = new JButton(lLabels[0]);
 		left.setPreferredSize(new Dimension(70, 30));
 		left.addActionListener(this);
@@ -56,15 +63,16 @@ public class SequenceOption extends JPanel implements ActionListener
 		right = new JButton(rLabels[0]);
 		right.setPreferredSize(new Dimension(70, 30));
 		right.addActionListener(this);
-		add(left);
-		add(right);
+		top.add(left);
+		top.add(right);
 		System.out.println("yes");
 		label = new JLabel("Very: ");
-		this.add(label);
+		top.add(label);
 		very = new JCheckBox();
-		this.add(very);
+		top.add(very);
 		add = new JButton("Add");
-		add(add);
+		add.addActionListener(this);
+		top.add(add);
 	}
 	
 	@Override
@@ -86,6 +94,21 @@ public class SequenceOption extends JPanel implements ActionListener
 		{
 			left.setEnabled(true);
 			right.setEnabled(false);
+		}
+		else if(arg0.getSource() == add)
+		{
+			System.out.println(names[options.getSelectedIndex()]);
+			String dir;
+			if(left.isEnabled())
+			{
+				dir = right.getText();
+			}
+			else
+			{
+				dir = left.getText();
+			}
+			bottom.add(new SequenceCommand(names[options.getSelectedIndex()], dir, very.isSelected()));
+			SerialArm.sequencer.pack();
 		}
 	}
 
