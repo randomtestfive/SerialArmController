@@ -116,6 +116,7 @@ public class SequenceCommand extends JPanel implements ActionListener
 			}
 			SequenceOption.moveComp(i, 1);
 		}
+		SequenceOption.UpdateCommand();
 	}
 
 	public void buttons()

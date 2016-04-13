@@ -14,6 +14,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import jssc.SerialPortException;
 
@@ -30,7 +31,7 @@ public class SequenceOption extends JPanel implements ActionListener
 	String[] rDirections;
 	String[] lLabels;
 	String[] rLabels;
-	ArrayList<String> commands;
+	static ArrayList<String> commands;
 	boolean[] verys;
 	JCheckBox very;
 	JPanel top;
@@ -38,6 +39,8 @@ public class SequenceOption extends JPanel implements ActionListener
 	JPanel veryBottom;
 	JButton send;
 	public static JPanel bottom;
+	JLabel commandLabel;
+	static JTextField commandField;
 	
 	public SequenceOption(ButtonSet[] set) 
 	{
@@ -60,6 +63,12 @@ public class SequenceOption extends JPanel implements ActionListener
 		add(veryBottom);
 		send = new JButton("Send");
 		send.addActionListener(this);
+		commandLabel = new JLabel("Command: ");
+		commandField = new JTextField();
+		commandField.setEditable(false);
+		commandField.setColumns(20);
+		veryBottom.add(commandLabel);
+		veryBottom.add(commandField);
 		veryBottom.add(send);
 		names = new String[set.length];
 		lDirections = new String[set.length];
@@ -150,6 +159,7 @@ public class SequenceOption extends JPanel implements ActionListener
 			}
 			bottom.add(new SequenceCommand(names[options.getSelectedIndex()], dir, very.isSelected(), com));
 			fixButtons();
+			UpdateCommand();
 		}
 		else if(arg0.getSource() == send)
 		{
@@ -166,22 +176,8 @@ public class SequenceOption extends JPanel implements ActionListener
 
 	void Send()
 	{
-		int count = bottom.getComponentCount();
-		System.out.println(count);
-		commands.clear();
-		for(int i = 0; i < count; i++)
-		{
-			SequenceCommand com = (SequenceCommand) bottom.getComponent(i);
-			commands.add(com.c);
-		}
-		String command = "";
-		for(String s : commands)
-		{
-			command = command + s;
-		}
 		try {
-			SerialArm.serial.writeString(command);
-			System.out.println("command: " + command);
+			SerialArm.serial.writeString(UpdateCommand());
 		} catch (SerialPortException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -213,5 +209,25 @@ public class SequenceOption extends JPanel implements ActionListener
 		bottom.repaint();
 		fixButtons();
 		System.out.println("Move");
+	}
+
+	static String UpdateCommand()
+	{
+		int count = bottom.getComponentCount();
+		System.out.println(count);
+		commands.clear();
+		for(int i = 0; i < count; i++)
+		{
+			SequenceCommand com = (SequenceCommand) bottom.getComponent(i);
+			commands.add(com.c);
+		}
+		String command = "";
+		for(String s : commands)
+		{
+			command = command + s;
+		}
+		commandField.setText(command);
+		commandField.repaint();
+		return command;
 	}
 }
