@@ -1,6 +1,7 @@
 package serialArm;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,8 +24,9 @@ public class SequenceCommand extends JPanel implements ActionListener
 	String n;
 	String d;
 	boolean v;
+	String c;
 
-	public SequenceCommand(String name, String direction, boolean very) 
+	public SequenceCommand(String name, String direction, boolean very, String command)
 	{
 		super();
 		setAlignmentX(JPanel.LEFT_ALIGNMENT);
@@ -60,15 +62,68 @@ public class SequenceCommand extends JPanel implements ActionListener
 		veryLabel.setAlignmentX(JPanel.LEFT_ALIGNMENT);
 		add(veryLabel);
 		x.addActionListener(this);
+		up.addActionListener(this);
+		down.addActionListener(this);
+		if(v)
+		{
+			c = command.toUpperCase();
+		}
+		else
+		{
+			c = command;
+		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) 
 	{
-		SequenceOption.bottom.remove(this);
-		SequenceOption.bottom.revalidate();
-		SequenceOption.bottom.repaint();
-		SerialArm.sequencer.pack();
+		if(arg0.getSource() == x)
+		{
+			SequenceOption.bottom.remove(this);
+			SequenceOption.bottom.revalidate();
+			SequenceOption.bottom.repaint();
+			SequenceOption.fixButtons();
+		}
+		else if(arg0.getSource() == up)
+		{
+			int i = 0;
+			for (Component c : getParent().getComponents())
+			{
+				if(c == this)
+				{
+					break;
+				}
+				else
+				{
+					i++;
+				}
+			}
+			SequenceOption.moveComp(i, -1);
+		}
+		else if(arg0.getSource() == down)
+		{
+			int i = 0;
+			for (Component c : getParent().getComponents())
+			{
+				if(c == this)
+				{
+					break;
+				}
+				else
+				{
+					i++;
+				}
+			}
+			SequenceOption.moveComp(i, 1);
+		}
+	}
+
+	public void buttons()
+	{
+		if(getParent().getComponent(0) == this) { up.setEnabled(false); }
+		else {up.setEnabled(true); }
+		if(getParent().getComponent(getParent().getComponentCount() - 1) == this) { down.setEnabled(false); }
+		else {down.setEnabled(true); }
 	}
 
 }

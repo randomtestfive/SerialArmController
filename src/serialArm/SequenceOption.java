@@ -1,9 +1,11 @@
 package serialArm;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -12,6 +14,8 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import jssc.SerialPortException;
 
 @SuppressWarnings("serial")
 public class SequenceOption extends JPanel implements ActionListener 
@@ -26,10 +30,13 @@ public class SequenceOption extends JPanel implements ActionListener
 	String[] rDirections;
 	String[] lLabels;
 	String[] rLabels;
+	ArrayList<String> commands;
 	boolean[] verys;
 	JCheckBox very;
 	JPanel top;
 	JPanel topIn;
+	JPanel veryBottom;
+	JButton send;
 	public static JPanel bottom;
 	
 	public SequenceOption(ButtonSet[] set) 
@@ -47,6 +54,13 @@ public class SequenceOption extends JPanel implements ActionListener
 		bottom.setLayout(new BoxLayout(bottom, BoxLayout.Y_AXIS));
 		bottom.setAlignmentX(LEFT_ALIGNMENT);
 		add(bottom);
+		veryBottom = new JPanel();
+		veryBottom.setLayout(new FlowLayout(FlowLayout.TRAILING));
+		veryBottom.setAlignmentX(LEFT_ALIGNMENT);
+		add(veryBottom);
+		send = new JButton("Send");
+		send.addActionListener(this);
+		veryBottom.add(send);
 		names = new String[set.length];
 		lDirections = new String[set.length];
 		rDirections = new String[set.length];
@@ -87,11 +101,21 @@ public class SequenceOption extends JPanel implements ActionListener
 		add = new JButton("Add");
 		add.addActionListener(this);
 		topIn.add(add);
+		commands = new ArrayList<String>();
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent arg0) 
 	{
+		if((bottom.getComponentCount() == 0 && arg0.getSource() != add) || SerialArm.serial == null)
+		{
+			send.setEnabled(false);
+		}
+		else
+		{
+			send.setEnabled(true);
+		}
+
 		if(arg0.getSource() == options)
 		{
 			very.setEnabled(verys[options.getSelectedIndex()]);
@@ -113,17 +137,81 @@ public class SequenceOption extends JPanel implements ActionListener
 		{
 			System.out.println(names[options.getSelectedIndex()]);
 			String dir;
+			String com;
 			if(left.isEnabled())
 			{
 				dir = right.getText();
+				com = rDirections[options.getSelectedIndex()];
 			}
 			else
 			{
 				dir = left.getText();
+				com = lDirections[options.getSelectedIndex()];
 			}
-			bottom.add(new SequenceCommand(names[options.getSelectedIndex()], dir, very.isSelected()));
-			SerialArm.sequencer.pack();
+			bottom.add(new SequenceCommand(names[options.getSelectedIndex()], dir, very.isSelected(), com));
+			fixButtons();
+		}
+		else if(arg0.getSource() == send)
+		{
+			if(SerialArm.serial != null)
+			{
+				Send();
+			}
+			else
+			{
+				send.setEnabled(false);
+			}
 		}
 	}
 
+	void Send()
+	{
+		int count = bottom.getComponentCount();
+		System.out.println(count);
+		commands.clear();
+		for(int i = 0; i < count; i++)
+		{
+			SequenceCommand com = (SequenceCommand) bottom.getComponent(i);
+			commands.add(com.c);
+		}
+		String command = "";
+		for(String s : commands)
+		{
+			command = command + s;
+		}
+		try {
+			SerialArm.serial.writeString(command);
+			System.out.println("command: " + command);
+		} catch (SerialPortException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	static void fixButtons()
+	{
+		for (Component c : bottom.getComponents())
+		{
+			SequenceCommand sc = (SequenceCommand) c;
+			sc.buttons();
+		}
+		SerialArm.sequencer.pack();
+	}
+
+	static void moveComp(int index, int amount)
+	{
+		Component[] comps = bottom.getComponents();
+		bottom.removeAll();
+		Component temp = comps[index];
+		comps[index] = comps[index + amount];
+		comps[index + amount] = temp;
+		for (Component c : comps)
+		{
+			bottom.add(c);
+		}
+		bottom.revalidate();
+		bottom.repaint();
+		fixButtons();
+		System.out.println("Move");
+	}
 }
