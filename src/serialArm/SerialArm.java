@@ -30,6 +30,7 @@ public class SerialArm implements ActionListener, SerialPortEventListener
 	public static ButtonSet elbow;
 	public static ButtonSet wrist;
 	public static ButtonSet claw;
+	static boolean ready;
 	
 	public static void main(String[] args) throws Exception 
 	{
@@ -46,7 +47,7 @@ public class SerialArm implements ActionListener, SerialPortEventListener
 		wrist = new ButtonSet("Wrist", "CCW", "CC", "u", "i");
 		claw = new ButtonSet("Claw", "Open", "Close", "y", "t");
 		sequencer = new JFrame("Sequencer");
-		sequencer.setLocation(500, 50);
+		sequencer.setLocation(550, 50);
 		ButtonSet[] set = {base, shoulder, elbow, wrist, claw};
 		SequenceOption option =  new SequenceOption(set);
 		sequencer.add(option);
@@ -56,23 +57,43 @@ public class SerialArm implements ActionListener, SerialPortEventListener
 		sequencer.pack();
 
 		String[] portNames = SerialPortList.getPortNames();
-        
+		frame.setLocation(200, 50);
 		if (portNames.length == 0) 
 		{
+			ready = false;
 		    label = new JLabel("Could not find any COM ports.");
 		    frame.add(label);
-		    goButton = new JButton("OK");
-		    goButton.addActionListener(new ActionListener() 
-		    {	
+		    goButton = new JButton("Refresh");
+		    JButton close = new JButton("Close");
+		    close.addActionListener(new ActionListener()
+		    {
 				@Override
-				public void actionPerformed(ActionEvent e) 
+				public void actionPerformed(ActionEvent e)
 				{
 					System.exit(0);
 				}
 			});
+		    goButton.addActionListener(new ActionListener()
+		    {
+				@Override
+				public void actionPerformed(ActionEvent e)
+				{
+					String[] portNames = SerialPortList.getPortNames();
+					if(portNames.length != 0)
+					{
+						ready = true;
+					}
+					System.out.println(ready);
+				}
+			});
 		    frame.add(goButton);
+		    frame.add(close);
 		    frame.setVisible(true);
-		    while(true);
+		    while(!ready) { System.out.print("");}
+		    portNames = SerialPortList.getPortNames();
+		    frame.getContentPane().removeAll();
+		    frame.getContentPane().revalidate();
+		    frame.getContentPane().repaint();
 		}
 
 		for (int i = 0; i < portNames.length; i++){
@@ -86,7 +107,6 @@ public class SerialArm implements ActionListener, SerialPortEventListener
 		goButton = new JButton("Go");
 		goButton.addActionListener(a);
 		frame.add(goButton);
-		frame.setLocation(200, 50);
 		frame.setVisible(true);
 
 		//frame.pack();
