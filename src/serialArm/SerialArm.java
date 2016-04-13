@@ -115,13 +115,9 @@ public class SerialArm implements ActionListener, SerialPortEventListener
 					frame.repaint();
 					frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
 					frame.add(base);
-					
 					frame.add(shoulder);
-					
 					frame.add(elbow);
-					
 					frame.add(wrist);
-					
 					frame.add(claw);
 					frame.pack();
 					frame.validate();
