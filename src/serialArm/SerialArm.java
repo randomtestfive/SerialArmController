@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.UIManager;
 
 import jssc.SerialPort;
 import jssc.SerialPortEvent;
@@ -35,6 +36,7 @@ public class SerialArm implements ActionListener, SerialPortEventListener
 	public static void main(String[] args) throws Exception 
 	{
 		SerialArm a = new SerialArm();
+		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		frame = new JFrame();
 		frame.setSize(350, 350);
 		frame.setTitle("Arm Controller");
