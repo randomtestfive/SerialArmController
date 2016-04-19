@@ -109,6 +109,7 @@ public class SequenceOption extends JPanel implements ActionListener
 		topIn.add(Box.createRigidArea(new Dimension(5,0)));
 		add = new JButton("Add");
 		add.addActionListener(this);
+		add.setPreferredSize(new Dimension(70, 30));
 		topIn.add(add);
 		commands = new ArrayList<String>();
 	}
